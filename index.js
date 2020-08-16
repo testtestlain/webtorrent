@@ -214,7 +214,10 @@ class WebTorrent extends EventEmitter {
       if (this.destroyed) return
       for (const t of this.torrents) {
         if (t.infoHash === torrent.infoHash && t !== torrent) {
-          torrent._destroy(new Error(`Cannot add duplicate torrent ${torrent.infoHash}`))
+          const index = this.torrents.indexOf(t);
+          if (index > -1){
+            this.torrents.splice(index, 1);
+          }
           return
         }
       }
